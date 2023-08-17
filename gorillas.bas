@@ -9,7 +9,8 @@
 80 poke 53272,23:rem set lower case
 90 poke 53281,black:rem set black for background
 100 poke 53280,black:rem set black for border
-110 print chr$(147):y=11:text$="Reading data...":gosub 430
+110 print chr$(147):y=11:text$="Reading data...":gosub 440
+
 120 gosub 2110:rem read sprites data
 130 gosub 1860:rem init sound
 140 gosub 190:rem call intro
@@ -45,7 +46,7 @@
 420 REM ## locate ##
 430 POKE 214, Y: POKE 211,X: SYS 58640: RETURN
 
-440 rem Print Center (y, text$)
+440 rem ## print at center (y, text$) ##
 450 poke py,y:poke px,20-(len(text$)/2):sys 58732
 460 print text$;
 470 return
@@ -211,7 +212,7 @@
 2000 next
 2010 return
 
-2020 rem ## play seqment (j) ##
+2020 rem ## play seqment (m) ##
 2030 j=p%(m)
 2040 poke s,fl%(j):poke s+1,fh%(j)
 2050 poke s+4,wf+1
@@ -221,7 +222,7 @@
 2090 if dr%(j)<>0 then 2040
 2100 return
 
-2110 REM ### read sprites data ###
+2110 REM ## read sprites data ##
 2120 for l=12288 to 12288+63+64*3
 2130 read d:poke l,d
 2140 next
