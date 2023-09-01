@@ -204,19 +204,27 @@
 1750 next
 1760 mh=14
 1770 ml=2
-1780 x=0
-1790 nw=0
 1800 s=fnran(4)
-1810 if s=1 then h0=ml:rem upward slope
-1820 if s=2 then h0=mh:rem downward slope
+1810 if s=1 then h0=ml:a=1:rem upward slope
+1820 if s=2 then h0=mh:a=-1:rem downward slope
 1830 if s=3 then h0=mh:rem "v" slope
 1840 if s=4 then h0=ml:rem Inverted "v" slope
-1850 if s=1 then a=1
-1860 if s=2 then a=-1
-1870 bh=h0
+1861 bh=h0
+1862 for i=0 to 8
+1863 h(i)=bh
+1864 if s=3 and i<5 then a=-1
+1865 if s=3 and i>5 then a=1
+1866 if s=4 and i>5 then a=-1
+1867 if s=4 and i<5 then a=1
+1869 h0=h0+a
+1870 bh=h0+a*fnran(10)
+1871 if bh>mh then bh=mh
+1872 if bh<ml then bh=ml
+1873 next i
+
+1879 x=0
 1880 for i=0 to 8
-1890 h(i)=bh
-1900 y0=23-bh
+1900 y0=23-h(i)
 1910 cr$=mid$(c$,fnran(5),1)
 1915 k=0
 1916 y=y0:gosub 440
@@ -224,14 +232,6 @@
 1960 print cr$;b$(k+w(i));
 1961 k=2
 1970 next
-1980 if s=3 and i<5 then a=-1
-1990 if s=3 and i>5 then a=1
-2000 if s=4 and i<5 then a=1
-2010 if s=4 and i>5 then a=-1
-2020 h0=h0+a
-2030 bh=h0+a*fnran(10)
-2040 if bh>mh then bh=mh
-2050 if bh<ml then bh=ml
 2060 x=x+4+w(i)
 2070 next
 2075 x=0:y=0:gosub 440
