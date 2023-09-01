@@ -108,22 +108,12 @@
 1220 sp=1:b=0:x=190:y=160:c=8:gosub 1490:rem set right gorilla
 1230 k=0
 1240 for t=1 to 1000:next
+1245 for m=2 to 5
 1250 k=1-k
 1260 poke 2040,192+1+k:rem set bank
 1270 poke 2041,192+2-k:rem set bank
-1280 m=2:gosub 2290
-1290 k=1-k
-1300 poke 2040,192+1+k:rem set bank
-1310 poke 2041,192+2-k:rem set bank
-1320 m=3:gosub 2290
-1330 k=1-k
-1340 poke 2040,192+1+k:rem set bank
-1350 poke 2041,192+2-k:rem set bank
-1360 m=4:gosub 2290
-1370 k=1-k
-1380 poke 2040,192+1+k:rem set bank
-1390 poke 2041,192+2-k:rem set bank
-1400 m=5:gosub 2290
+1280 gosub 2290
+1290 next
 1410 for t=1 to 500:next
 1420 for n=1 to 4
 1430 k=1-k
