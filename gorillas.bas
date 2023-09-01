@@ -8,6 +8,7 @@
 80 darkblue=6:gray=15
 
 90 poke 53272,23:rem set lower case
+95 poke v+21,0
 100 poke 53281,black:rem set black for background
 110 poke 53280,black:rem set black for border
 120 poke 646,white
@@ -56,44 +57,19 @@
 
 500 rem ## sparkle pause ##
 510 m=1:gosub 2290
-520 for m=0 to 7
-530 poke 2040+m,192
-540 next
-550 poke v+16,240
-560 for i=0 to 6 step 2
-570 poke v+i,24:next
-580 for i=8 to 14 step 2
-590 poke v+i,79:next
-600 for i=39 to 46:poke v+i,red:next
-610 p1=42+8
-620 p2=42+8*6
-630 p3=42+8*11
-640 p4=42+8*16
-650 q1=42+8*5
-660 q2=42+8*10
-670 q3=42+8*15
-680 q4=42+8*20
-690 a$="*    *    *    *    *    *    *    *    *    "
-695 b$=""
-700 poke v+21,255
+690 h$="*    *    *    *    *    *    *    *    *    "
+692 v$="{left}{down}*{left}{down} {left}{down} {left}{down} {left}{down} "
+694 v$=v$+v$+v$+v$+v$
 710 poke 646,red
-720 a=1:k=0
-730 z1=p1:z2=p2:z3=p3:z4=p4
-740 w1=q1:w2=q2:w3=q3:w4=q4
-750 print chr$(home);mid$(a$,a,40);
-760 poke py,19:print
-770 print mid$(a$,7-a,40);
-780 poke v+1,z1:poke v+9,w1
-790 poke v+3,z2:poke v+11,w2
-800 poke v+5,z3:poke v+13,w3
-810 poke v+7,z4:poke v+15,w4
-820 get k$:if k$<>"" then poke v+21,0:return
-830 a=a+1
-840 if a>5 then 720
-850 k=a-1
-860 z1=z1+8:z2=z2+8:z3=z3+8:z4=z4+8
-870 w1=w1-8:w2=w2-8:w3=w3-8:w4=w4-8
-880 goto 750
+715 a=1:b=1
+725 print chr$(home)+mid$(h$,a,40);
+755 print mid$(v$,b,57) 
+756 print chr$(home)+mid$(v$,21-b,57)
+757 print mid$(h$,7-a,40); 
+759 a=a+1:b=b+3
+820 get k$:if k$<>"" then return
+860 if a > 5 then 715
+880 goto 725
 
 890 rem ## get inputs ##
 900 print chr$(147):rem clear screen
@@ -128,31 +104,31 @@
 1180 y=2:text$="G O R I L L A S":gosub 460
 1190 y=5:text$="STARRING:":gosub 460
 1200 y=7:text$=p1$ + " AND " + p2$:gosub 460
-1210 sp=0:b=1:x=140:y=160:c=8:gosub 1490:rem set left gorilla
-1220 sp=1:b=1:x=190:y=160:c=8:gosub 1490:rem set right gorilla
+1210 sp=0:b=0:x=140:y=160:c=8:gosub 1490:rem set left gorilla
+1220 sp=1:b=0:x=190:y=160:c=8:gosub 1490:rem set right gorilla
 1230 k=0
 1240 for t=1 to 1000:next
 1250 k=1-k
-1260 poke 2040,192+2+k:rem set bank
-1270 poke 2041,192+3-k:rem set bank
+1260 poke 2040,192+1+k:rem set bank
+1270 poke 2041,192+2-k:rem set bank
 1280 m=2:gosub 2290
 1290 k=1-k
-1300 poke 2040,192+2+k:rem set bank
-1310 poke 2041,192+3-k:rem set bank
+1300 poke 2040,192+1+k:rem set bank
+1310 poke 2041,192+2-k:rem set bank
 1320 m=3:gosub 2290
 1330 k=1-k
-1340 poke 2040,192+2+k:rem set bank
-1350 poke 2041,192+3-k:rem set bank
+1340 poke 2040,192+1+k:rem set bank
+1350 poke 2041,192+2-k:rem set bank
 1360 m=4:gosub 2290
 1370 k=1-k
-1380 poke 2040,192+2+k:rem set bank
-1390 poke 2041,192+3-k:rem set bank
+1380 poke 2040,192+1+k:rem set bank
+1390 poke 2041,192+2-k:rem set bank
 1400 m=5:gosub 2290
 1410 for t=1 to 500:next
 1420 for n=1 to 4
 1430 k=1-k
-1440 poke 2040,192+2+k:rem set bank
-1450 poke 2041,192+3-k:rem set bank
+1440 poke 2040,192+1+k:rem set bank
+1450 poke 2041,192+2-k:rem set bank
 1460 m=6:gosub 2290
 1470 next
 1480 return
@@ -173,7 +149,7 @@
 1580 poke 53281,darkblue:rem set blue for background
 1590 poke 53280,darkblue:rem set blue for border
 1610 poke v+21,0
-1615 sp=0:b=4:x=172:y=50:c=7:gosub 1490:rem set sun happy
+1615 sp=0:b=3:x=172:y=50:c=7:gosub 1490:rem set sun happy
 1620 gosub 1650:rem make city scape
 1630 gosub 2090:rem place gorillas
 1631 rem loop
@@ -243,14 +219,14 @@
 2096 if n=2 then x1=(w(1)+4)*8:aj=x1/(4+(1-w(1))*2)
 2097 x=x0+x1-aj 
 2098 y=217-h(n-1)*8
-2100 sp=1:b=1:c=8:gosub 1490:rem set gorilla
+2100 sp=1:b=0:c=8:gosub 1490:rem set gorilla
 
 2101 n=fnran(2)
 2102 x0=(w(8)+4)*8:x1=0:aj=x0/(4+(1-w(8))*2)
 2103 if n=2 then x1=(w(7)+4)*8:aj=x1/(4+(1-w(7))*2)
 2104 x=341-x0-x1+aj 
 2105 y=217-h(9-n)*8
-2106 sp=2:b=1:c=8:gosub 1490:rem set gorilla
+2106 sp=2:b=0:c=8:gosub 1490:rem set gorilla
 2107 return
 
 2130 rem ## init sid ##
@@ -281,20 +257,12 @@
 2370 return
 
 2380 REM ## read sprites data ##
-2390 for l=12288 to 12288+63+64*4
+2390 for l=12288 to 12287+64*5
 2400 read d:poke l,d
 2410 next
 2420 return
 
 2430 rem ## sprite data ##
-2440 DATA 0,0,0,102,0,0,60,0
-2450 DATA 0,255,0,0,60,0,0,102
-2460 DATA 0,0,0,0,0,0,0,0
-2470 DATA 0,0,0,0,0,0,0,0
-2480 DATA 0,0,0,0,0,0,0,0
-2490 DATA 0,0,0,0,0,0,0,0
-2500 DATA 0,0,0,0,0,0,0,0
-2510 DATA 0,0,0,0,0,0,0,0
 2520 DATA 0,126,0,0,195,0,0,255
 2530 DATA 0,0,219,0,0,126,0,0
 2540 DATA 60,0,7,255,192,31,239,240
@@ -319,7 +287,6 @@
 2730 DATA 255,240,1,255,0,7,199,192
 2731 DATA 15,131,224,15,1,224,15,1
 2732 DATA 224,15,1,224,7,131,192,0
-
 2735 DATA 0,16,0,1,17,0,1,17,0
 2736 DATA 24,146,48,4,254,64,3,255,128
 2737 DATA 199,255,198,55,183,216,15,147,224
@@ -327,6 +294,16 @@
 2739 DATA 14,254,224,55,57,216,199,199,198
 2740 DATA 3,255,128,4,254,64,24,146,48
 2741 DATA 1,17,0,1,17,0,0,16,0,0
+
+
+2743 DATA 0,16,0,1,17,0,1,17,0
+2744 DATA 24,146,48,4,254,64,3,255,128
+2745 DATA 199,255,198,55,187,216,15,17,224
+2746 DATA 15,187,224,255,255,254,15,199,224
+2747 DATA 15,131,224,55,131,216,199,199,198
+2748 DATA 3,255,128,4,254,64,24,146,48
+2749 DATA 1,17,0,1,17,0,0,16,0,0
+
 
 2760 rem ## music data ##
 2770 data 8,97,100,9,104,100,10,143,100
