@@ -1,4 +1,5 @@
 10 rem ## gorillas ##
+15 clr
 20 def fn ran(x)=int(rnd(0)*x)+1
 30 v=53248
 40 py=214:px=211
@@ -6,7 +7,6 @@
 60 left=157:right=29
 70 black=0:white=1:red=2
 80 darkblue=6:gray=15
-
 90 poke 53272,23:rem set lower case
 95 poke v+21,0
 100 poke 53281,black:rem set black for background
@@ -152,9 +152,11 @@
 1638 rem end loop
 1639 rem next
 1640 return
+
 1641 rem ## do shot ##
 1645 rem if p=1then
 1649 retrun 
+
 1650 rem ## make city scape ##
 1655 l4$="{left}{left}{left}{left}{down}"
 1658 l5$="{left}{left}{left}{left}{left}{down}"
@@ -187,7 +189,6 @@
 1871 if bh>mh then bh=mh
 1872 if bh<ml then bh=ml
 1873 next i
-
 1879 x=0
 1880 for i=0 to 8
 1900 y0=23-h(i)
@@ -210,7 +211,6 @@
 2097 x=x0+x1-aj 
 2098 y=217-h(n-1)*8
 2100 sp=1:b=0:c=8:gosub 1490:rem set gorilla
-
 2101 n=fnran(2)
 2102 x0=(w(8)+4)*8:x1=0:aj=x0/(4+(1-w(8))*2)
 2103 if n=2 then x1=(w(7)+4)*8:aj=x1/(4+(1-w(7))*2)
@@ -284,8 +284,6 @@
 2739 DATA 14,254,224,55,57,216,199,199,198
 2740 DATA 3,255,128,4,254,64,24,146,48
 2741 DATA 1,17,0,1,17,0,0,16,0,0
-
-
 2743 DATA 0,16,0,1,17,0,1,17,0
 2744 DATA 24,146,48,4,254,64,3,255,128
 2745 DATA 199,255,198,55,187,216,15,17,224
@@ -293,7 +291,6 @@
 2747 DATA 15,131,224,55,131,216,199,199,198
 2748 DATA 3,255,128,4,254,64,24,146,48
 2749 DATA 1,17,0,1,17,0,0,16,0,0
-
 
 2760 rem ## music data ##
 2770 data 8,97,100,9,104,100,10,143,100
