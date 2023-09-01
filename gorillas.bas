@@ -73,7 +73,8 @@
 660 q2=42+8*10
 670 q3=42+8*15
 680 q4=42+8*20
-690 a$ = "*    *    *    *    *    *    *    *    *    "
+690 a$="*    *    *    *    *    *    *    *    *    "
+695 b$=""
 700 poke v+21,255
 710 poke 646,red
 720 a=1:k=0
@@ -182,19 +183,23 @@
 1635 y=22:sp1$=str$(tw(1)):sp2$=str$(tw(2))
 1636 text$=right$(sp1$,len(sp1$)-1)+">Score<"+right$(sp2$,len(sp2$)-1):gosub 460
 1637 x=0:y=0:gosub 440
-1647 rem end loop
-1648 rem next
-1649 return
-
+1638 rem end loop
+1639 rem next
+1640 return
+1641 rem ## do shot ##
+1645 rem if p=1then
+1649 retrun 
 1650 rem ## make city scape ##
-1660 b$(0)="{cm i}{cm i}{cm i}{cm f}"
-1670 b$(1)="{cm i}{cm i}{cm i}{cm i}{cm f}"
-1680 b$(2)="{reverse on}{cm c}{cm c}{cm c}{reverse off}{cm k}"
-1690 b$(3)="{reverse on}{cm c}{cm c}{cm c}{cm c}{reverse off}{cm k}"
+1655 l4$="{left}{left}{left}{left}{down}"
+1658 l5$="{left}{left}{left}{left}{left}{down}"
+1660 b$(0)="{cm i}{cm i}{cm i}{cm f}"+l4$
+1670 b$(1)="{cm i}{cm i}{cm i}{cm i}{cm f}"+l5$
+1680 b$(2)="{reverse on}{cm c}{cm c}{cm c}{reverse off}{cm k}"+l4$
+1690 b$(3)="{reverse on}{cm c}{cm c}{cm c}{cm c}{reverse off}{cm k}"+l5$
 1700 print chr$(147):rem clear screen
 1710 c$="{white}{cyan}{pink}{light blue}{light gray}"
 1720 for i=1 to 4
-1730 x=int(rnd(0)*9):if w(x)=1 then 1730
+1730 x=fnran(9)-1:if w(x)=1 then 1730
 1740 w(x)=1
 1750 next
 1760 mh=14
@@ -213,11 +218,11 @@
 1890 h(i)=bh
 1900 y0=23-bh
 1910 cr$=mid$(c$,fnran(5),1)
+1915 k=0
+1916 y=y0:gosub 440
 1920 for y=y0 to 23
-1930 gosub 440
-1940 k=2
-1950 if y=y0 then k=0
 1960 print cr$;b$(k+w(i));
+1961 k=2
 1970 next
 1980 if s=3 and i<5 then a=-1
 1990 if s=3 and i>5 then a=1
