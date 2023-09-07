@@ -1,7 +1,7 @@
 10 rem ## gorillas ##
 20 clr
 30 def fn ran(x)=int(rnd(0)*x)+1
-35 sm=235
+35 sm=240
 40 v=53248
 50 py=214:px=211
 60 home=19:down=17
@@ -105,9 +105,9 @@
 980 y=2:text$="G O R I L L A S":gosub 500
 990 y=5:text$="STARRING:":gosub 500
 1000 y=7:text$=p1$ + " AND " + p2$:gosub 500
-1010 sp=0:b=0:x=140:y=160:c=8:gosub 1190:rem set left gorilla
-1020 sp=1:b=0:x=190:y=160:c=8:gosub 1190:rem set right gorilla
-1030 k=0
+1010 sp=0:b=0:x=140:y=160:c=8:gosub 1200:rem set left gorilla
+1020 sp=1:b=0:x=190:y=160:c=8:gosub 1200:rem set right gorilla
+1030 k=1
 1040 for t=1 to 1000:next
 1050 for m=2 to 5
 1060 k=1-k
@@ -129,7 +129,8 @@
 1210 poke 2040+sp,sm+b:rem set bank
 1220 xh=int(x/256):xl=x-256*xh
 1230 poke v+sp*2,xl
-1240 if xh=1 then poke v+16,peek(v+16) or (2^sp):rem extra x-coordinate
+1240 if xh=0 then poke v+16,peek(v+16) and (255-2^sp):rem extra x-coordinate
+1245 if xh=1 then poke v+16,peek(v+16) or (2^sp):rem extra x-coordinate
 1250 poke v+sp*2+1,y
 1260 poke v+21,peek(v+21) or (2^sp):rem enable sprite
 1270 return
@@ -142,7 +143,7 @@
 1330 poke 53280,darkblue:rem set blue for border
 1340 poke 19,1
 1350 poke v+21,0
-1360 sp=0:b=3:x=172:y=50:c=7:gosub 1190:rem set sun happy
+1360 sp=0:b=3:x=172:y=50:c=7:gosub 1200:rem set sun happy
 1370 gosub 1640:rem make city scape
 1380 gosub 2130:rem place gorillas
 1390 j=1-j
@@ -165,12 +166,33 @@
 1550 y=2:gosub 460:input "Velocity:";ve
 1560 if p=2 then an=180-an
 1570 y=1:gosub 460:print spc(80);
-1580 gosub 1620
+1580 gosub 1611
 1590 hit=1
 1600 return
+
 1610 rem ## plot shot (angle, velocity, playernum)
-1620
-1630 return
+1611 sp=3:b=6:c=7:x=xs(p):y=ys(p)-8:r=200/350
+1612 if p=2 then x=x+16
+1613 poke 2040+p,sm+p:rem set bank
+1614 for t=1 to 100:next
+1615 poke 2040+p,sm:rem set bank
+1616 an=an/180*3.141592
+1617 poke v+39+sp,c:rem set color
+1619 poke v+21,peek(v+21) or (2^sp):rem enable sprite
+1620 x0=x:y0=y:ix=cos(an)*ve:iy=sin(an)*ve:w=1:t=0 
+1621 x= x0 + (ix * t) + (.5 * (w / 5) * t * t)
+1622 y= y0 + ((-1 * (iy * t)) + (.5 * gravity * t * t)) * r
+1623 if (x>320 or x<0) and (y>200 or y<0) then return
+1624 xh=int(x/256):xl=x-256*xh
+1625 poke v+sp*2,xl
+1626 if xh=0 then poke v+16,peek(v+16) and (255-2^sp):rem extra x-coordinate
+1627 if xh=1 then poke v+16,peek(v+16) or (2^sp):rem extra x-coordinate
+1628 poke v+sp*2+1,y
+1629 poke 2040+sp,sm+b:rem set bank
+1630 t=t+.1
+1631 b=b+1:if b> 9 then b=6
+1632 goto 1621
+
 1640 rem ## make city scape ##
 1650 l4$="{left}{left}{left}{left}{down}"
 1660 l5$="{left}{left}{left}{left}{left}{down}"
@@ -225,15 +247,15 @@
 2140 n=fnran(2)
 2150 x0=(w(0)+4)*8:x1=0:aj=x0/(4+(1-w(0))*2)
 2160 if n=2 then x1=(w(1)+4)*8:aj=x1/(4+(1-w(1))*2)
-2170 x=x0+x1-aj
-2180 y=217-h(n-1)*8
-2190 sp=1:b=0:c=8:gosub 1190:rem set gorilla
+2170 x=x0+x1-aj:xs(1)=x
+2180 y=217-h(n-1)*8:ys(1)=y
+2190 sp=1:b=0:c=8:gosub 1200:rem set gorilla
 2200 n=fnran(2)
 2210 x0=(w(bc)+4)*8:x1=0:aj=x0/(4+(1-w(bc))*2)
 2220 if n=2 then x1=(w(bc-1)+4)*8:aj=x1/(4+(1-w(bc-1))*2)
-2230 x=341-x0-x1+aj
-2240 y=217-h(bc+1-n)*8
-2250 sp=2:b=0:c=8:gosub 1190:rem set gorilla
+2230 x=341-x0-x1+aj:xs(2)=x
+2240 y=217-h(bc+1-n)*8:ys(2)=y
+2250 sp=2:b=0:c=8:gosub 1200:rem set gorilla
 2260 return
 
 2270 rem ## init sid ##
@@ -280,23 +302,23 @@
 2650 DATA 15,131,224,15,1,224,15,1
 2660 DATA 224,15,1,224,7,131,192,0
 
-2670 rem g right hand up
-2680 DATA 0,126,240,0,195,120,0,255
-2690 DATA 56,0,219,60,0,126,60,0
-2700 DATA 60,120,7,255,248,31,239,240
-2710 DATA 63,239,192,127,215,192,122,56
-2720 DATA 128,121,255,0,61,255,0,31
-2730 DATA 255,0,1,255,0,7,199,192
+2670 rem g left hand up
+2680 DATA 30,126,0,60,195,0,56,255
+2690 DATA 0,120,219,0,120,126,0,60
+2700 DATA 60,0,63,255,192,31,239,240
+2710 DATA 7,239,248,7,215,252,2,56
+2720 DATA 188,1,255,60,1,255,120,1
+2730 DATA 255,240,1,255,0,7,199,192
 2740 DATA 15,131,224,15,1,224,15,1
 2750 DATA 224,15,1,224,7,131,192,0
 
-2760 rem g left hand up
-2770 DATA 30,126,0,60,195,0,56,255
-2780 DATA 0,120,219,0,120,126,0,60
-2790 DATA 60,0,63,255,192,31,239,240
-2800 DATA 7,239,248,7,215,252,2,56
-2810 DATA 188,1,255,60,1,255,120,1
-2820 DATA 255,240,1,255,0,7,199,192
+2760 rem g right hand up
+2770 DATA 0,126,240,0,195,120,0,255
+2780 DATA 56,0,219,60,0,126,60,0
+2790 DATA 60,120,7,255,248,31,239,240
+2800 DATA 63,239,192,127,215,192,122,56
+2810 DATA 128,121,255,0,61,255,0,31
+2820 DATA 255,0,1,255,0,7,199,192
 2830 DATA 15,131,224,15,1,224,15,1
 2840 DATA 224,15,1,224,7,131,192,0
 
@@ -327,9 +349,9 @@
 3070 DATA 0,0,0,0,0,0,0,0,0
 3080 DATA 0,0,0,0,0,0,0,0,0,0
 
-3090 REM banana down
-3100 DATA 0,0,0,0,0,0,60,0,0
-3110 DATA 126,0,0,66,0,0,0,0,0
+3090 REM banana up
+3100 DATA 0,0,0,0,0,0,0,0,0
+3110 DATA 66,0,0,126,0,0,60,0,0
 3120 DATA 0,0,0,0,0,0,0,0,0
 3130 DATA 0,0,0,0,0,0,0,0,0
 3140 DATA 0,0,0,0,0,0,0,0,0
@@ -345,23 +367,24 @@
 3230 DATA 0,0,0,0,0,0,0,0,0
 3240 DATA 0,0,0,0,0,0,0,0,0,0
 
-3250 REM banana right
-3260 DATA 0,0,0,24,0,0,48,0,0
-3270 DATA 48,0,0,48,0,0,48,0,0
-3280 DATA 24,0,0,0,0,0,0,0,0
+3250 REM banana down
+3260 DATA 0,0,0,0,0,0,60,0,0
+3270 DATA 126,0,0,66,0,0,0,0,0
+3280 DATA 0,0,0,0,0,0,0,0,0
 3290 DATA 0,0,0,0,0,0,0,0,0
 3300 DATA 0,0,0,0,0,0,0,0,0
 3310 DATA 0,0,0,0,0,0,0,0,0
 3320 DATA 0,0,0,0,0,0,0,0,0,0
 
-3330 REM banana up
-3340 DATA 0,0,0,0,0,0,0,0,0
-3350 DATA 66,0,0,126,0,0,60,0,0
-3360 DATA 0,0,0,0,0,0,0,0,0
+3330 REM banana right
+3340 DATA 0,0,0,24,0,0,48,0,0
+3350 DATA 48,0,0,48,0,0,48,0,0
+3360 DATA 24,0,0,0,0,0,0,0,0
 3370 DATA 0,0,0,0,0,0,0,0,0
 3380 DATA 0,0,0,0,0,0,0,0,0
 3390 DATA 0,0,0,0,0,0,0,0,0
-3400 DATA 0,0,0,0,0,0,0,0,0,0
+3395 DATA 0,0,0,0,0,0,0,0,0,0
+
 
 
 3410 REM explosion 1
