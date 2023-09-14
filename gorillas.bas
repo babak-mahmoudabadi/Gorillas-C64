@@ -1,7 +1,7 @@
 10 rem ## gorillas ##
 20 clr
 30 def fn ran(x)=int(rnd(0)*x)+1
-35 sm=240
+35 sm=241
 40 v=53248
 50 py=214:px=211
 60 home=19:down=17
@@ -178,23 +178,27 @@
 1615 if p=2 then x=x+16
 1616 an=an/180*3.141592
 1617 poke v+39+sp,c:rem set color
-1619 x0=x:y0=y:ix=cos(an)*ve:iy=sin(an)*ve:w=1:t=0
-1620 yp=v+sp*2+1:xp=v+sp*2:pk=4
-1621 x=x0+(ix*t)+(.5*(w/5)*t*t):y=y0+((-1*(iy*t))+(.5*gravity*t*t))*.6
+1618 x0=x:y0=y:ix=cos(an)*ve:iy=sin(an)*ve:w=1:t=0
+1619 yp=v+sp*2+1:xp=v+sp*2:pk=4
+1620 x=x0+(ix*t)+(.5*(w/5)*t*t):y=y0+((-1*(iy*t))+(.5*gravity*t*t))*.6
 
-1622 if x>350 or x<18 then 1636
-1623 if y<0 then 1631
-1624 poke v+21,7:poke xp,x and 255
-1625 if x<=255 then poke v+16,pk and 247:rem extra x-coordinate
-1626 if x>255 then poke v+16,pk or 8:rem extra x-coordinate
-1627 poke yp,y
-1628 poke 2040+sp,sm+b:rem set bank
-1629 poke v+21,15
+1621 if x>350 or x<18 then 1636
+1622 if y<0 then 1631
+1623 poke v+21,7:poke xp,x and 255
+1624 if x<=255 then poke v+16,pk and 247:rem extra x-coordinate
+1625 if x>255 then poke v+16,pk or 8:rem extra x-coordinate
+1626 poke yp,y
+1627 poke 2040+sp,sm+b:rem set bank
+1628 poke v+21,15
 
-1630 bp=1024+int((y-47)/8)*40+INT((x-24)/8):if peek(bp)<>32 and y>75 then poke bp,32:m=7:gosub 2430:goto 1636
-
-1631 t=t+.1:b=b+1:if b>9 then b=6
-1633 goto 1621
+1629 bp=1024+int((y-47)/8)*40+INT((x-24)/8):if peek(bp)<>32 and y>75 then poke bp,32:m=7:gosub 2430:goto 1636
+1630 cs=peek(v+30)
+1631 if (cs and 1)=1 then print "sun":end
+1632 if (cs and 2)=2 and p=1 then print "p1":end
+1633 if (cs and 2)=4 and p=2 then print "p2":end
+ 
+1634 t=t+.1:b=b+1:if b>9 then b=6
+1635 goto 1620
 1636 poke v+21,7
 1638 return
 
@@ -336,7 +340,7 @@
 2910 DATA 3,255,128,4,254,64,24,146,48
 2920 DATA 1,17,0,1,17,0,0,16,0,0
 
-2930 rem sun fear
+2930 rem sun shock
 2940 DATA 0,16,0,1,17,0,1,17,0
 2950 DATA 24,146,48,4,254,64,3,255,128
 2960 DATA 199,255,198,55,187,216,15,17,224
@@ -474,9 +478,9 @@
 4170 data 5,71,48,5,152,48,6,71,48
 4180 data 5,71,48,5,152,48,4,180,48
 4190 data 4,48,48,0,0,0
-4200 data 5,71,5,5,152,5,6,71,5
-4210 data 5,71,5,5,152,5,4,180,5
-4220 data 4,48,5,0,0,0,6,167,37
+4200 data 5,71,8,5,152,8,6,71,8
+4210 data 5,71,8,5,152,8,4,180,8
+4220 data 4,48,8,0,0,0,6,167,37
 4230 data 4,48,18,7,233,75,7,119,18
 4240 data 0,0,0
 
