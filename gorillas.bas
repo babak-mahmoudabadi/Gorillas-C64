@@ -136,17 +136,16 @@
 1270 return
 
 1280 rem ## play game ##
-1290 j=1
+1282 poke 53281,darkblue:rem set blue for background
+1283 poke 53280,darkblue:rem set blue for border
+1290 j=0
 1300 for g=1 to numgames
 1310 print chr$(147):rem clear screen
-1320 poke 53281,darkblue:rem set blue for background
-1330 poke 53280,darkblue:rem set blue for border
-1340 poke 19,1
-1350 poke v+21,0
+1340 poke 19,1:poke v+21,0
+1350 hit=0
 1360 sp=0:b=3:x=172:y=50:c=7:gosub 1200:rem set sun happy
 1370 gosub 1640:rem make city scape
 1380 gosub 2130:rem place gorillas
-1390 j=1-j
 1400 poke 646,white
 1410 x=0:y=0:gosub 460:print p1$
 1420 x=40-len(p2$):y=0:gosub 460:print p2$
@@ -154,8 +153,9 @@
 1440 text$=right$(sp1$,len(sp1$)-1)+">Score<"+right$(sp2$,len(sp2$)-1):gosub 500
 1450 x=0:y=0:gosub 460
 1460 p=j+1:gosub 1500:rem do shot
-1470 if hit<>1 then 1390
-1480 next g
+1465 j=1-j
+1470 if hit=0 then 1460
+1480 next
 1490 return
 
 1500 rem ## do shot (playernum) ##
@@ -167,31 +167,36 @@
 1560 if p=2 then an=180-an
 1570 y=1:gosub 460:print spc(80);
 1580 gosub 1611
-1590 hit=1
 1600 return
 
 1610 rem ## plot shot (angle, velocity, playernum)
-1611 sp=3:b=6:c=7:x=xs(p):y=ys(p)-8:r=200/350
-1612 if p=2 then x=x+16
-1613 poke 2040+p,sm+p:rem set bank
-1614 for t=1 to 100:next
-1615 poke 2040+p,sm:rem set bank
+1611 poke 2040+p,sm+p:rem set bank
+1612 m=8:gosub 2430
+1613 poke 2040+p,sm:rem set bank
+
+1614 sp=3:b=6:c=7:x=xs(p):y=ys(p)-8
+1615 if p=2 then x=x+16
 1616 an=an/180*3.141592
 1617 poke v+39+sp,c:rem set color
-1619 poke v+21,peek(v+21) or (2^sp):rem enable sprite
-1620 x0=x:y0=y:ix=cos(an)*ve:iy=sin(an)*ve:w=1:t=0 
-1621 x= x0 + (ix * t) + (.5 * (w / 5) * t * t)
-1622 y= y0 + ((-1 * (iy * t)) + (.5 * gravity * t * t)) * r
-1623 if (x>320 or x<0) and (y>200 or y<0) then return
-1624 xh=int(x/256):xl=x-256*xh
-1625 poke v+sp*2,xl
-1626 if xh=0 then poke v+16,peek(v+16) and (255-2^sp):rem extra x-coordinate
-1627 if xh=1 then poke v+16,peek(v+16) or (2^sp):rem extra x-coordinate
-1628 poke v+sp*2+1,y
-1629 poke 2040+sp,sm+b:rem set bank
-1630 t=t+.1
-1631 b=b+1:if b> 9 then b=6
-1632 goto 1621
+1619 x0=x:y0=y:ix=cos(an)*ve:iy=sin(an)*ve:w=1:t=0
+1620 yp=v+sp*2+1:xp=v+sp*2:pk=4
+1621 x=x0+(ix*t)+(.5*(w/5)*t*t):y=y0+((-1*(iy*t))+(.5*gravity*t*t))*.6
+
+1622 if x>350 or x<18 then 1636
+1623 if y<0 then 1631
+1624 poke v+21,7:poke xp,x and 255
+1625 if x<=255 then poke v+16,pk and 247:rem extra x-coordinate
+1626 if x>255 then poke v+16,pk or 8:rem extra x-coordinate
+1627 poke yp,y
+1628 poke 2040+sp,sm+b:rem set bank
+1629 poke v+21,15
+
+1630 bp=1024+int((y-47)/8)*40+INT((x-24)/8):if peek(bp)<>32 and y>75 then poke bp,32:m=7:gosub 2430:goto 1636
+
+1631 t=t+.1:b=b+1:if b>9 then b=6
+1633 goto 1621
+1636 poke v+21,7
+1638 return
 
 1640 rem ## make city scape ##
 1650 l4$="{left}{left}{left}{left}{down}"
@@ -211,18 +216,18 @@
 1790 next
 1800 mh=17
 1810 ml=2
-1820 s=fnran(4)
-1830 if s=1 then h0=ml:a=1:rem upward slope
-1840 if s=2 then h0=mh:a=-1:rem downward slope
-1850 if s=3 then h0=mh:rem "v" slope
-1860 if s=4 then h0=ml:rem Inverted "v" slope
+1820 sl=fnran(4)
+1830 if sl=1 then h0=ml:a=1:rem upward slope
+1840 if sl=2 then h0=mh:a=-1:rem downward slope
+1850 if sl=3 then h0=mh:rem "v" slope
+1860 if sl=4 then h0=ml:rem Inverted "v" slope
 1870 bh=h0
 1880 for i=0 to bc
 1890 h(i)=bh
-1900 if s=3 and i<5 then a=-1
-1910 if s=3 and i>5 then a=1
-1920 if s=4 and i>5 then a=-1
-1930 if s=4 and i<5 then a=1
+1900 if sl=3 and i<5 then a=-1
+1910 if sl=3 and i>5 then a=1
+1920 if sl=4 and i>5 then a=-1
+1930 if sl=4 and i<5 then a=1
 1940 h0=h0+a
 1950 bh=h0+a*fnran(10)
 1960 if bh>mh then bh=mh
@@ -267,22 +272,22 @@
 2330 POKE S+3,0
 2340 POKE S+5,0:rem ad
 2350 POKE S+6,240:rem sr
-2360 dim fh%(113):dim fl%(113):dim dr%(113):dim p%(6)
+2360 dim fh%(126):dim fl%(126):dim dr%(126):dim p%(8)
 2370 j=2
-2380 for i=1 to 113
+2380 for i=1 to 126
 2390 read fh%(i), fl%(i), dr%(i)
-2400 if dr%(i)=0 and i<>113 then p%(j)=i+1:j=j+1
+2400 if dr%(i)=0 and i<>126 then p%(j)=i+1:j=j+1
 2410 next
 2420 return
 
 2430 rem ## play seqment (m) ##
-2440 j=p%(m)
-2450 poke s,fl%(j):poke s+1,fh%(j)
+2440 q=p%(m)
+2450 poke s,fl%(q):poke s+1,fh%(q)
 2460 poke s+4,wf+1
-2470 for t=1 to dr%(j):next
+2470 for t=1 to dr%(q):next
 2480 poke s+4,wf
-2490 j=j+1
-2500 if dr%(j)<>0 then 2450
+2490 q=q+1
+2500 if dr%(q)<>0 then 2450
 2510 return
 
 2520 REM ## read sprites data ##
@@ -385,8 +390,6 @@
 3390 DATA 0,0,0,0,0,0,0,0,0
 3395 DATA 0,0,0,0,0,0,0,0,0,0
 
-
-
 3410 REM explosion 1
 3420 DATA 0,0,0,0,0,0,0,0,0
 3430 DATA 0,0,0,0,0,0,0,0,0
@@ -404,7 +407,6 @@
 3540 DATA 0,16,0,0,0,0,0,0,0
 3550 DATA 0,0,0,0,0,0,0,0,0
 3560 DATA 0,0,0,0,0,0,0,0,0,0
-
 
 3570 REM explosion 3
 3580 DATA 0,0,0,0,0,0,0,0,0
@@ -424,7 +426,6 @@
 3710 DATA 3,255,192,3,255,192,0,255,0
 3720 DATA 0,60,0,0,0,0,0,0,0,0
 
-
 3730 REM explosion 5
 3740 DATA 0,0,0,0,126,0,1,255,128
 3750 DATA 7,255,224,15,255,240,15,255,240
@@ -433,7 +434,6 @@
 3780 DATA 63,255,252,63,255,252,31,255,248
 3790 DATA 31,255,248,15,255,240,15,255,240
 3800 DATA 7,255,224,1,255,128,0,126,0,0
-
 
 3810 rem ## music data ##
 3820 data 8,97,100,9,104,100,10,143,100
@@ -474,4 +474,9 @@
 4170 data 5,71,48,5,152,48,6,71,48
 4180 data 5,71,48,5,152,48,4,180,48
 4190 data 4,48,48,0,0,0
+4200 data 5,71,5,5,152,5,6,71,5
+4210 data 5,71,5,5,152,5,4,180,5
+4220 data 4,48,5,0,0,0,6,167,37
+4230 data 4,48,18,7,233,75,7,119,18
+4240 data 0,0,0
 
