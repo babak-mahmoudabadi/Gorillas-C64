@@ -7,5 +7,5 @@
  wind speed, gravity, and the city skyline.<br>
  <br>
 
- <img src="/screenshot.png" width="768">
+ <img src="/screenshot.png" width="768px">
 
