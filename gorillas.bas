@@ -16,7 +16,7 @@
 40 print chr$(147):y=11:tx$="Reading data...":gosub 110
 42 gosub 564:rem read sprites data
 44 gosub 514:rem init sound
-46 gosub 56:rem call intro
+46 gosub 56:rem  intro
 48 gosub 148:rem get inputs
 50 gosub 184:rem gorilla intro
 52 gosub 268:rem play game
@@ -25,31 +25,28 @@
 56 rem ## intro ##
 58 print chr$(147):rem clear screen
 60 print:print
-62 poke 646,white
-64 print spc(12);"G O R I L L A S"
-66 poke 646,gray
+64 print spc(12);"{white}G O R I L L A S"
 68 print:print
-70 print spc(3);"Copyright (c) IBM Corporation 1991"
+70 print spc(3);"{gray}Copyright (c) IBM Corporation 1991"
 72 print spc(2);"Ported for C64 by Babak Mahmoudabadi"
 74 print
 76 print spc(2);"Your mission is to hit your opponent"
 78 print spc(2);"with the exploding banana by varying"
 80 print spc(2);"the angle and power of your throw, "
 82 print spc(2);"taking into account wind speed, "
-84 print spc(2);"gravity, and the city skyline. The "
+84 print spc(2);"gr, and the city skyline. The "
 86 print spc(2);"wind speed is shown by a directional"
 88 print spc(2);"arrow at the bottom of the playing"
 90 print spc(2);"field, its length relative to its"
 92 print spc(2);"strength."
 94 print:print:print:print
 96 print spc(7);"Press any key to continue"
+97 m=1:gosub 546
 98 gosub 118:rem call SparklePauserun
 100 return
 
-102 REM ## locate ##
-104 POKE 214, y: POKE 211,x
-106 SYS 58640
-108 RETURN
+102 rem ## locate (x, y) ##
+104 poke py,y: poke px,x:sys 58640:return
 
 110 rem ## print at center (y, tx$) ##
 112 poke py,y:poke px,20-(len(tx$)/2):sys 58732
@@ -57,7 +54,6 @@
 116 return
 
 118 rem ## sparkle pause ##
-120 m=1:gosub 546
 122 h$="*    *    *    *    *    *    *    *    *    "
 124 v$="{left}{down}*{left}{down} {left}{down} {left}{down} {left}{down} "
 126 v$=v$+v$+v$+v$+v$
@@ -75,18 +71,18 @@
 148 rem ## get inputs ##
 150 print chr$(147):rem clear screen
 152 poke 646,gray
-154 poke py,6:poke px,0:sys 58732
+154 y=6:x=0:gosub 104
 156 input "Name of Player 1 (Default = 'Player 1') "; p1$
 158 if p1$="" then p1$="Player 1"
 160 p1$=left$(p1$, 10)
-162 poke py,8:poke px,0:sys 58732
+162 y=8:x=0:gosub 104
 164 input "Name of Player 2 (Default = 'Player 2') "; p2$
 166 if p2$="" then p2$="Player 2"
 168 p2$=left$(p2$, 10)
-170 poke py,10:poke px,0:sys 58732
+170 y=10:x=0:gosub 104
 172 input "Play to how many total points(Default=3)"; nu
 174 if nu=0 then nu=3
-176 poke py,12:poke px,0:sys 58732
+176 y=12:x=0:gosub 104
 178 input "Gravity in Meters/Sec (Earth = 9.8)     "; gr
 180 if gr=0 then gr=9.8
 182 return
