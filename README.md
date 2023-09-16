@@ -1,6 +1,4 @@
 # Gorillas-C64
-
- G o r i l l a s<br>
  Copyright (C) IBM Corporation 1991<br>
  Ported for C64 by Babak Mahmoudabadi<br>
  
@@ -9,5 +7,5 @@
  wind speed, gravity, and the city skyline.<br>
  <br>
 
- <img src="/screenshot.png" width="681">
+ <img src="/screenshot.png" width="768">
 
