@@ -24,7 +24,7 @@
 56 print chr$(147)
 58 y=11:tx$="{purple}Would you like to play again?(y/n)":gosub 114
 60 get k$:if k$="" then 60
-62 if k$="y" then 50
+62 if k$="y" or k$=chr$(13) then 50
 64 print chr$(147)
 66 end
 
