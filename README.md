@@ -6,3 +6,5 @@
  Your mission is to hit your opponent with the exploding banana
  by varying the angle and power of your throw, taking into account
  wind speed, gravity, and the city skyline.
+ ![Gorillas](/screenshot.png)
+
