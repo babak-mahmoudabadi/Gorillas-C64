@@ -6,5 +6,6 @@
  by varying the angle and power of your throw, taking into account
  wind speed, gravity, and the city skyline.<br>
  <br>
-![](screenshot.png)
-
+![gorillas-intro](screenshot01.png)
+<br>
+![gorillas-ingame](screenshot01.png)
