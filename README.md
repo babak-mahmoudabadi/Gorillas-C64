@@ -8,4 +8,4 @@
  <br>
 ![gorillas-intro](screenshot01.png)
 <br>
-![gorillas-ingame](screenshot01.png)
+![gorillas-ingame](screenshot02.png)
