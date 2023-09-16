@@ -6,5 +6,5 @@
  by varying the angle and power of your throw, taking into account
  wind speed, gravity, and the city skyline.<br>
  <br>
-<img src="screenshot.png" alt="alt text" width="768" height="544">
+<img src="screenshot.png" alt="alt text" width="320" height="200">
 
