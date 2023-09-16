@@ -16,10 +16,15 @@
 40 print chr$(147):y=11:tx$="Reading data...":gosub 110
 42 gosub 564:rem read sprites data
 44 gosub 514:rem init sound
-46 gosub 56:rem  intro
-48 gosub 148:rem get inputs
-50 gosub 184:rem gorilla intro
-52 gosub 268:rem play game
+45 gosub 56:rem  intro
+46 gosub 148:rem get inputs
+47 gosub 184:rem gorilla intro
+48 gosub 268:rem play game
+49 print chr$(147)
+50 y=11:tx$="{purple}Would you like to play again?(y/n)":gosub 110
+51 get k$:if k$="" then 51
+52 if k$="y" then 46
+53 print chr$(147)
 54 end
 
 56 rem ## intro ##
@@ -72,18 +77,18 @@
 150 print chr$(147):rem clear screen
 152 poke 646,gray
 154 y=6:x=0:gosub 104
-156 input "Name of Player 1 (Default='Player 1')   "; p1$
+156 input "Name of Player 1 (Default = 'Player 1') "; p1$
 158 if p1$="" then p1$="Player 1"
 160 p1$=left$(p1$, 10)
 162 y=8:x=0:gosub 104
-164 input "Name of Player 2 (Default='Player 2')   "; p2$
+164 input "Name of Player 2 (Default = 'Player 2') "; p2$
 166 if p2$="" then p2$="Player 2"
 168 p2$=left$(p2$, 10)
 170 y=10:x=0:gosub 104
 172 input "Play to how many total points(Default=3)"; ng
 174 if ng=0 then ng=3
 176 y=12:x=0:gosub 104
-178 input "Gravity in Meters/Sec (Earth=9.8)       "; gr
+178 input "Gravity in Meters/Sec (Earth = 9.8)     "; gr
 180 if gr=0 then gr=9.8
 182 return
 
@@ -132,22 +137,22 @@
 266 return
 
 268 rem ## play game ##
-269 sc%(1)=0:sc%(2)=0
+269 tw%(1)=0:tw%(2)=0
 270 poke 53281,darkblue:rem set blue for background
 272 poke 53280,darkblue:rem set blue for border
 274 j=0
 276 for g=1 to ng
 278 print chr$(147):rem clear screen
 280 poke 19,1:poke v+21,0
-282 hit=0
-284 sp=3:b=3:x=172:y=50:c=7:gosub 250:rem set sun happy
-286 gosub 388:rem make city scape
-288 gosub 486:rem place gorillas
+282 gosub 388:rem make city scape
+284 gosub 486:rem place gorillas
+286 sp=3:b=3:x=172:y=50:c=7:gosub 250:rem set sun happy
+288 hit=0
 290 poke 646,white
 292 x=0:y=0:gosub 102:print p1$
 294 x=40-len(p2$):y=0:gosub 102:print p2$
-296 y=22:so$=str$(sc%(1)):st$=str$(sc%(2))
-297 tx$=right$(so$,len(so$)-1)+">Score<"+right$(st$,len(st$)-1):gosub 110
+296 y=22:sa$=str$(tw%(1)):sb$=str$(tw%(2))
+297 tx$=right$(sa$,len(sa$)-1)+">Score<"+right$(sb$,len(sb$)-1):gosub 110
 300 x=0:y=0:gosub 102
 302 p=j+1:gosub 312:rem do shot
 304 j=1-j
@@ -203,7 +208,7 @@
 384 for n=1 to 4
 385 r=1-r:poke 2040+ap,sm+1+r:m=6:gosub 546:rem set bank
 386 next
-387 poke v+30,0:sc%(ap)=sc%(ap)+1:return
+387 poke v+30,0:tw%(ap)=tw%(ap)+1:return
 
 388 rem ## make city scape ##
 390 l4$="{left}{left}{left}{left}{down}"
