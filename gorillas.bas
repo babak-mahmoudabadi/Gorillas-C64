@@ -72,18 +72,18 @@
 150 print chr$(147):rem clear screen
 152 poke 646,gray
 154 y=6:x=0:gosub 104
-156 input "Name of Player 1 (Default = 'Player 1') "; p1$
+156 input "Name of Player 1 (Default='Player 1')   "; p1$
 158 if p1$="" then p1$="Player 1"
 160 p1$=left$(p1$, 10)
 162 y=8:x=0:gosub 104
-164 input "Name of Player 2 (Default = 'Player 2') "; p2$
+164 input "Name of Player 2 (Default='Player 2')   "; p2$
 166 if p2$="" then p2$="Player 2"
 168 p2$=left$(p2$, 10)
 170 y=10:x=0:gosub 104
-172 input "Play to how many total points(Default=3)"; nu
-174 if nu=0 then nu=3
+172 input "Play to how many total points(Default=3)"; ng
+174 if ng=0 then ng=3
 176 y=12:x=0:gosub 104
-178 input "Gravity in Meters/Sec (Earth = 9.8)     "; gr
+178 input "Gravity in Meters/Sec (Earth=9.8)       "; gr
 180 if gr=0 then gr=9.8
 182 return
 
@@ -136,7 +136,7 @@
 270 poke 53281,darkblue:rem set blue for background
 272 poke 53280,darkblue:rem set blue for border
 274 j=0
-276 for g=1 to nu
+276 for g=1 to ng
 278 print chr$(147):rem clear screen
 280 poke 19,1:poke v+21,0
 282 hit=0
