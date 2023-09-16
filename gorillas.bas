@@ -71,7 +71,7 @@
 142 print mid$(h$,7-a,40);
 144 a=a+1:b=b+3
 146 get k$:if k$<>"" then return
-148 if a > 5 then 134
+148 if a>5 then 134
 150 goto 136
 
 152 rem ## get inputs ##
@@ -107,21 +107,21 @@
 210 y=2:tx$="G O R I L L A S":gosub 114
 212 y=5:tx$="STARRING:":gosub 114
 214 y=7:tx$=p1$ + " AND " + p2$:gosub 114
-216 sp=1:b=0:x=140:y=160:c=8:gosub 254:rem set left gorilla
-218 sp=2:b=0:x=190:y=160:c=8:gosub 254:rem set right gorilla
+216 sp=1:b=0:x=140:y=160:c=8:gosub 254:rem set left hand
+218 sp=2:b=0:x=190:y=160:c=8:gosub 254:rem set right hand
 220 k=1
 222 for t=1 to 1000:next
 224 for m=2 to 5
 226 k=1-k
-228 poke 2041,sm+1+k:rem set bank
-230 poke 2042,sm+2-k:rem set bank
+228 poke 2041,sm+1+k
+230 poke 2042,sm+2-k
 232 gosub 610
 234 next
 236 for t=1 to 500:next
 238 for n=1 to 4
 240 k=1-k
-242 poke 2041,sm+1+k:rem set bank
-244 poke 2042,sm+2-k:rem set bank
+242 poke 2041,sm+1+k
+244 poke 2042,sm+2-k
 246 m=6:gosub 610
 248 next
 250 return
@@ -134,7 +134,7 @@
 262 if xh=0 then poke v+16,peek(v+16) and (255-2^sp)
 264 if xh=1 then poke v+16,peek(v+16) or (2^sp):rem extra x-coordinate
 266 poke v+sp*2+1,y
-268 poke v+21,peek(v+21) or (2^sp):rem enable sprite
+268 poke v+21,peek(v+21)or(2^sp):rem enable sprite
 270 return
 
 272 rem ## play game ##
@@ -147,7 +147,7 @@
 286 poke 19,1:poke v+21,0
 288 gosub 432:rem make city scape
 290 gosub 550:rem place gorillas
-292 sp=3:b=3:x=172:y=50:c=7:gosub 254:rem set sun happy
+292 sp=3:b=3:x=172:y=50:c=7:gosub 254:rem sun smile
 294 hit=0
 296 poke 646,white
 298 x=0:y=0:gosub 108:print p1$
@@ -170,7 +170,7 @@
 332 return
 
 334 rem ## do shot (playernum) ##
-336 poke 2040+3,sm+3:rem set sun smile
+336 poke 2040+3,sm+3:rem sun smile
 338 if p=1 then x=0
 340 if p=2 then x=27
 342 poke 646,3
@@ -178,13 +178,14 @@
 346 y=2:gosub 108:input "Velocity:";ve
 348 if p=2 then an=180-an
 350 x=0:y=0:gosub 108:print spc(120);
-352 gosub 358
+352 gosub 357
 354 return
 
 356 rem ## plot shot (angle, velocity, playernum)
+357 rw=0:if wd>0 then rw=32
 358 poke 2040+p,sm+p:rem toss banana
 360 m=8:gosub 610
-362 poke 2040+p,sm:rem set bank
+362 poke 2040+p,sm
 364 sp=4:b=6:c=7:x=xs(p):y=ys(p)-8
 366 if p=2 then x=x+16
 368 an=an/180*3.141592
@@ -192,28 +193,29 @@
 372 x0=x:y0=y:ix=cos(an)*ve:iy=sin(an)*ve:t=0
 374 yp=v+sp*2+1:xp=v+sp*2:pk=4
 376 x=x0+(ix*t)+(.5*(wd/5)*t*t):y=y0+((-1*(iy*t))+(.5*gr*t*t))*.6
-378 if x>350 or x<18 then poke v+21,14:return
+378 if x>350 or x<18 then poke v+21,14+rw:return
 380 if y<0 then 404
-382 poke v+21,14:poke xp,x and 255
+382 poke v+21,14+rw:poke xp,x and 255
 384 if x<=255 then poke v+16,pk and 239
 386 if x>255 then poke v+16,pk or 16:rem extra x-coordinate
 388 poke yp,y
-390 poke 2040+sp,sm+b:rem set bank
-392 poke v+21,30
+390 poke 2040+sp,sm+b
+392 poke v+21,30+rw
 394 bp=1024+int((y-47)/8)*40+int((x-24)/8)
-396 if peek(bp)<>32 and y>75 then poke v+21,14:poke bp,32:m=7:gosub 610:return
+396 if peek(bp)<>32 and y>75 then poke v+21,14+rw:poke bp,32:m=7:gosub 610:return
 398 cs=peek(v+30)
 400 if (cs and 8)<>0 then poke 2040+3,sm+4
-402 if (cs and 22)>16 then hit=1:poke v+21,14:goto 408
+402 if (cs and 22)>16 then hit=1:poke v+21,14+rw:goto 408
 404 t=t+.1:b=b+1:if b>9 then b=6
 406 goto 376
-408 hp=(cs and 6)/2:sp=0:b=10:x=xs(hp)-12:y=ys(hp):c=2:gosub 254:poke v+29,1:sn=1:m=7:gosub 614
+408 hp=(cs and 6)/2:sp=0:b=10:x=xs(hp)-12:y=ys(hp):c=2:gosub 254:poke v+29,1
+409 sn=1:m=7:gosub 614
 410 for b=11 to 14
 412 poke 2040,sm+b:gosub 616
 414 next
-416 ap=2-hp+1:poke v+21,8+ap*2
+416 ap=2-hp+1:poke v+21,8+ap*2+rw
 418 for n=1 to 4:rem victory dance
-420 r=1-r:poke 2040+ap,sm+1+r:rem set bank
+420 r=1-r:poke 2040+ap,sm+1+r
 422 m=6:gosub 610
 424 next
 426 poke v+30,0
@@ -276,7 +278,7 @@
 538 poke 646,4
 540 ln$="{192}{192}{192}{192}{192}":ln$=ln$+ln$+ln$:tx$=mid$(ln$,1,abs(wd))
 542 if wd<0 then tx$="{arrow left}"+tx$
-544 if wd>0 then tx$=tx$+" ":sp=5:b=5:x=21+(19+len(tx$)/2)*8:y=242:c=4:gosub 254
+544 if wd>0 then tx$=tx$+" ":sp=5:b=5:x=24+(19+int(len(tx$)/2))*8:y=242:c=4:gosub 254
 546 y=24:gosub 114
 548 return
 
@@ -331,7 +333,6 @@
 640 return
 
 642 rem ## sprite data ##
-644 rem gorilla
 646 DATA 0,126,0,0,195,0,0,255
 648 DATA 0,0,219,0,0,126,0,0
 650 DATA 60,0,7,255,192,31,239,240
@@ -340,7 +341,6 @@
 656 DATA 255,240,1,255,0,7,199,192
 658 DATA 15,131,224,15,1,224,15,1
 660 DATA 224,15,1,224,7,131,192,0
-662 rem g left hand up
 664 DATA 30,126,0,60,195,0,56,255
 666 DATA 0,120,219,0,120,126,0,60
 668 DATA 60,0,63,255,192,31,239,240
@@ -349,7 +349,6 @@
 674 DATA 255,240,1,255,0,7,199,192
 676 DATA 15,131,224,15,1,224,15,1
 678 DATA 224,15,1,224,7,131,192,0
-680 rem g right hand up
 682 DATA 0,126,240,0,195,120,0,255
 684 DATA 56,0,219,60,0,126,60,0
 686 DATA 60,120,7,255,248,31,239,240
@@ -358,7 +357,6 @@
 692 DATA 255,0,1,255,0,7,199,192
 694 DATA 15,131,224,15,1,224,15,1
 696 DATA 224,15,1,224,7,131,192,0
-698 rem sun smile
 700 DATA 0,16,0,1,17,0,1,17,0
 702 DATA 24,146,48,4,254,64,3,255,128
 704 DATA 199,255,198,55,183,216,15,147,224
@@ -366,7 +364,6 @@
 708 DATA 14,254,224,55,57,216,199,199,198
 710 DATA 3,255,128,4,254,64,24,146,48
 712 DATA 1,17,0,1,17,0,0,16,0,0
-714 rem sun shock
 716 DATA 0,16,0,1,17,0,1,17,0
 718 DATA 24,146,48,4,254,64,3,255,128
 720 DATA 199,255,198,55,187,216,15,17,224
@@ -374,7 +371,6 @@
 724 DATA 15,131,224,55,131,216,199,199,198
 726 DATA 3,255,128,4,254,64,24,146,48
 728 DATA 1,17,0,1,17,0,0,16,0,0
-730 REM right arrow
 732 DATA 0,0,0,8,0,0,12,0,0
 734 DATA 254,0,0,254,0,0,12,0,0
 736 DATA 8,0,0,0,0,0,0,0,0
@@ -382,7 +378,6 @@
 740 DATA ,,,,,,,,
 742 DATA ,,,,,,,,
 744 DATA ,,,,,,,,,
-746 REM banana up
 748 DATA ,,,,,,,,
 750 DATA 66,0,0,126,0,0,60,0,0
 752 DATA ,,,,,,,,
@@ -390,7 +385,6 @@
 756 DATA ,,,,,,,,
 758 DATA ,,,,,,,,
 760 DATA ,,,,,,,,,
-762 REM banana left
 764 DATA 0,0,0,24,0,0,12,0,0
 766 DATA 12,0,0,12,0,0,12,0,0
 768 DATA 24,0,0,0,0,0,0,0,0
@@ -398,7 +392,6 @@
 772 DATA ,,,,,,,,
 774 DATA ,,,,,,,,
 776 DATA ,,,,,,,,,
-778 REM banana down
 780 DATA 0,0,0,0,0,0,60,0,0
 782 DATA 126,0,0,66,0,0,0,0,0
 784 DATA ,,,,,,,,
@@ -406,7 +399,6 @@
 788 DATA ,,,,,,,,
 790 DATA ,,,,,,,,
 792 DATA ,,,,,,,,,
-794 REM banana right
 796 DATA 0,0,0,24,0,0,48,0,0
 798 DATA 48,0,0,48,0,0,48,0,0
 800 DATA 24,0,0,0,0,0,0,0,0
@@ -414,7 +406,6 @@
 804 DATA ,,,,,,,,
 806 DATA ,,,,,,,,
 808 DATA ,,,,,,,,,
-810 REM explosion 1
 812 DATA ,,,,,,,,
 814 DATA ,,,,,,,,
 816 DATA ,,,,,,,,
@@ -422,7 +413,6 @@
 820 DATA ,,,,,,,,
 822 DATA ,,,,,,,,
 824 DATA ,,,,,,,,,
-826 REM explosion 2
 828 DATA ,,,,,,,,
 830 DATA ,,,,,,,,
 832 DATA 0,0,0,0,0,0,0,16,0
@@ -430,7 +420,6 @@
 836 DATA 0,16,0,0,0,0,0,0,0
 838 DATA ,,,,,,,,
 840 DATA ,,,,,,,,,
-842 REM explosion 3
 844 DATA ,,,,,,,,
 846 DATA ,,,,,,,,
 848 DATA 0,24,0,0,126,0,0,126,0
@@ -438,7 +427,6 @@
 852 DATA 0,126,0,0,126,0,0,24,0
 854 DATA ,,,,,,,,
 856 DATA ,,,,,,,,,
-858 REM explosion 4
 860 DATA ,,,,,,,,
 862 DATA 0,60,0,0,255,0,3,255,192
 864 DATA 3,255,192,7,255,224,7,255,224
@@ -446,7 +434,6 @@
 868 DATA 15,255,240,7,255,224,7,255,224
 870 DATA 3,255,192,3,255,192,0,255,0
 872 DATA 0,6,,,,,,,,
-874 REM explosion 5
 876 DATA 0,0,0,0,126,0,1,255,128
 878 DATA 7,255,224,15,255,240,15,255,240
 880 DATA 31,255,248,31,255,248,63,255,252
