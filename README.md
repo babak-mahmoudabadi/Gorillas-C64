@@ -7,5 +7,4 @@
  wind speed, gravity, and the city skyline.<br>
  <br>
 
-![](https://raw.githubusercontent.com/babak-mahmoudabadi/Gorillas-C64/main/screenshot.png | width=768)
-
+<img src="screenshot.png"  />
