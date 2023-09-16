@@ -7,4 +7,5 @@
  wind speed, gravity, and the city skyline.<br>
  <br>
 
-<img src="screenshot.png" style="width:768px;height:544px" />
+![](screenshot.png | width=768)
+
