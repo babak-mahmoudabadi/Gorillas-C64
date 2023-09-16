@@ -7,5 +7,5 @@
  wind speed, gravity, and the city skyline.<br>
  <br>
 
- <img src="/screenshot.png" style="width:768px" >
-
+![gorillas](screenshot.png)   
+{:.some-css-class width="768"}
