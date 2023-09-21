@@ -1,11 +1,7 @@
 # Gorillas-C64
- Copyright (C) IBM Corporation 1991<br>
- Ported for C64 by Babak Mahmoudabadi<br>
+
+I recently acquired a C64, the legendary 8-bit computer from the 80s.  Even after more than two decades, my programs on the cassette tape ran flawlessly. Among them, I discovered some unfinished projects that I had abandoned long ago, such as Gorillas, a classic game of throwing bananas at each other. I decided to resume my work on them. After all, there is no greater satisfaction than completing an unfinished project. ;)
  
- Your mission is to hit your opponent with the exploding banana
- by varying the angle and power of your throw, taking into account
- wind speed, gravity, and the city skyline.<br>
- <br>
 ![gorillas-intro](screenshot01.png)
 <br>
 ![gorillas-ingame](screenshot02.png)
