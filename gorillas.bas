@@ -46,7 +46,7 @@
 98 print spc(2);"field, its length relative to its"
 100 print spc(2);"strength."
 102 m=1:gosub 610
-104 gosub 122:rem call SparklePauserun
+104 gosub 122:rem call SparklePause
 106 return
 
 108 rem ## locate (x, y) ##
@@ -165,7 +165,6 @@
 322 y=10:tx$="Score:":gosub 114
 324 y=11:tx$=p1$+"    "+str$(tw%(1)):gosub 114
 326 y=12:tx$=p2$+"    "+str$(tw%(2)):gosub 114
-328 y=24:tx$= "Press any key to continue":gosub 114
 330 gosub 122
 332 return
 
